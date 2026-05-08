@@ -4,6 +4,9 @@ import MasterPlan from "../components/MasterPlan";
 import OrientationLock from "../components/OrientationLock";
 import { loadSheetPlotsData } from "@/lib/loadSheetPlots";
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 async function getSheetData() {
   try {
     const result = await loadSheetPlotsData();

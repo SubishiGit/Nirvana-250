@@ -351,7 +351,7 @@ export default function MasterPlan({ mapData, sheetRows = [], sheetCaps }) {
         const typeKey = String(sd.type || "").trim();
         // Facing filter matches either:
         // - Column C: East/West (sd.facing)
-        // - Column D: Type label (sd.type) like "NE Corner", "Park View East", etc.
+        // - Column D: Type label (sd.type) like "NE Corner", "Park Facing East", etc.
         if (!f.facing.has(facingKey) && !f.facing.has(typeKey)) continue;
       }
       if (sqftActive) {
@@ -937,8 +937,8 @@ export default function MasterPlan({ mapData, sheetRows = [], sheetCaps }) {
                     'NW Corner',
                     'SE Corner',
                     'SW Corner',
-                    'Park View East',
-                    'Park View West'
+                    'Park Facing East',
+                    'Park Facing West'
                   ].map(f => (
                     <div key={f}
                       onClick={() => {
