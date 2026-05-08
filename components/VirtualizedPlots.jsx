@@ -36,8 +36,8 @@ function getLabelLayout(pointsStr, label) {
   const short = Math.min(w, h);
   const len = Math.max(String(label).length, 1);
   // Large text, scaled down by width and digit count; clipPath keeps it inside polygon.
-  // Multiplier reduces final size ~22% so labels read more naturally on the tilted map.
-  const SIZE_SCALE = 0.78;
+  // Multiplier shrinks the final size so labels read naturally on the tilted map.
+  const SIZE_SCALE = 0.68;
   const byShort = short * 0.52;
   const byWidth = (w * 0.92) / (len * 0.58);
   const fontSize = Math.max(6, Math.min(byShort, byWidth, short * 0.75)) * SIZE_SCALE;

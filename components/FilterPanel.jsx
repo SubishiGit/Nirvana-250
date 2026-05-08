@@ -180,7 +180,7 @@ const FilterPanel = ({
                       onClick={() => handleFacingToggle(facing)}
                       className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${
                         filters.facing.includes(facing)
-                          ? 'bg-green-500 text-white'
+                          ? 'bg-cyan-500 text-white'
                           : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
                       }`}
                     >

@@ -134,10 +134,10 @@ svg polygon:hover {
 @keyframes filterGlow {
   0%, 100% {
     transform: scale(1);
-    box-shadow: 0 8px 24px rgba(136, 231, 136, 0.45), 0 0 20px rgba(136, 231, 136, 0.35);
+    box-shadow: 0 8px 24px rgba(103, 232, 249, 0.45), 0 0 20px rgba(103, 232, 249, 0.35);
   }
   50% {
     transform: scale(1.02);
-    box-shadow: 0 10px 28px rgba(136, 231, 136, 0.55), 0 0 25px rgba(136, 231, 136, 0.45);
+    box-shadow: 0 10px 28px rgba(103, 232, 249, 0.55), 0 0 25px rgba(103, 232, 249, 0.45);
   }
 }

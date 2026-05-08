@@ -31,8 +31,8 @@ function sheetPollIntervalMs() {
 const ZERO_CAPS = [0, 0, 0, 0, 0, 0, 0, 0];
 
 /** App theme accent (welcome, chrome glows, primary CTAs). Not used for filter availability / plot colors. */
-const THEME_ACCENT = "#88e788";
-const THEME_ACCENT_HOVER = "#5cbd5c";
+const THEME_ACCENT = "#67e8f9";
+const THEME_ACCENT_HOVER = "#22d3ee";
 
 function normalizeCaps(c) {
   if (!Array.isArray(c) || c.length !== 8) return ZERO_CAPS.slice();
@@ -642,12 +642,12 @@ export default function MasterPlan({ mapData, sheetRows = [], sheetCaps }) {
               width: '90vw',
               color: '#ffffff',
               textAlign: 'center',
-              boxShadow: `0 8px 32px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05) inset, 0 20px 40px rgba(136,231,136,0.32)`,
+              boxShadow: `0 8px 32px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05) inset, 0 20px 40px rgba(103,232,249,0.32)`,
               animation: 'filterGlow 2s ease-in-out infinite'
             }}
           >
             <h2 style={{ fontSize: instructionsUi.title, fontWeight: 700, marginBottom: 16, color: THEME_ACCENT }}>
-              Welcome to Subishi Breeze
+              Welcome to Subishi Sierra
             </h2>
             
             <div style={{ fontSize: instructionsUi.body, lineHeight: 1.6, marginBottom: 24, color: '#D1D5DB' }}>
@@ -764,7 +764,7 @@ export default function MasterPlan({ mapData, sheetRows = [], sheetCaps }) {
                     alignItems: 'center',
                     justifyContent: 'center',
                     borderRadius: 12,
-                    boxShadow: '0 8px 24px rgba(136,231,136,0.45), 0 0 20px rgba(136,231,136,0.35)',
+                    boxShadow: '0 8px 24px rgba(103,232,249,0.45), 0 0 20px rgba(103,232,249,0.35)',
                     cursor: 'pointer',
                     animation: 'filterGlow 2s ease-in-out infinite'
                   }}
@@ -799,7 +799,7 @@ export default function MasterPlan({ mapData, sheetRows = [], sheetCaps }) {
                     height: btnUi.btn,
                     maxWidth: 'min(62vw, 360px)',
                     borderRadius: 12,
-                    boxShadow: '0 8px 24px rgba(136,231,136,0.45), 0 0 20px rgba(136,231,136,0.35)',
+                    boxShadow: '0 8px 24px rgba(103,232,249,0.45), 0 0 20px rgba(103,232,249,0.35)',
                     cursor: 'pointer',
                     animation: 'filterGlow 2s ease-in-out infinite'
                   }}
