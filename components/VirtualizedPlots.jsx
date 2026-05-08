@@ -8,16 +8,17 @@ function safeClipId(plotId) {
 
 /** Bbox center + font size so label fits inside polygon (clipping handles overflow). */
 function getLabelLayout(pointsStr, label) {
-  const parts = String(pointsStr || "")
+  // Accept both SVG point formats: "x,y x,y" and "x y x y" (and mixed/with extra spaces).
+  const nums = String(pointsStr || "")
     .trim()
-    .split(/\s+/)
-    .filter(Boolean);
+    .split(/[\s,]+/)
+    .filter(Boolean)
+    .map(parseFloat);
   const xs = [];
   const ys = [];
-  for (const p of parts) {
-    const [sx, sy] = p.split(",");
-    const x = parseFloat(sx);
-    const y = parseFloat(sy);
+  for (let i = 0; i + 1 < nums.length; i += 2) {
+    const x = nums[i];
+    const y = nums[i + 1];
     if (Number.isFinite(x) && Number.isFinite(y)) {
       xs.push(x);
       ys.push(y);
