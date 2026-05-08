@@ -101,24 +101,23 @@ export function VirtualizedPlots({
           </clipPath>
         ))}
       </defs>
+      {/* Layer 1: all polygon shapes */}
       <g>
         {plots.map((plot) => {
           const isHighlighted = highlightedIds.has(plot.id);
           const isHovered = activePlotId === plot.id;
-          
-          // Determine fill and opacity based on filter state
+
           let fill = 'transparent';
           let opacity = 1;
           let stroke = 'rgba(255, 255, 255, 0.2)';
           let strokeWidth = 1;
-          
+
           if (isHighlighted) {
             fill = plot.color;
             stroke = 'white';
             strokeWidth = 0.6;
           }
-          
-          // If hovered, always show full opacity and color
+
           if (isHovered) {
             fill = plot.color;
             opacity = 1;
@@ -126,48 +125,50 @@ export function VirtualizedPlots({
             strokeWidth = 0.6;
           }
 
-          const label = String(plot.id);
-          const layout = isHighlighted ? getLabelLayout(plot.points, label) : null;
-          const clipRef = `url(#plot-clip-${safeClipId(plot.id)})`;
-          const labelFill =
-            plot.sheetData?.availability === "Blocked" ? "#000000" : "#ffffff";
-          
           return (
-            <g key={plot.id}>
-              <polygon
-                points={plot.points}
-                style={{
-                  fill: fill,
-                  stroke: stroke,
-                  strokeWidth: strokeWidth,
-                  opacity: opacity,
-                  cursor: 'pointer',
-                  transition: 'all 0.15s ease-in-out',
-                }}
-                onMouseEnter={() => onPlotHover(plot)}
-                onMouseLeave={onPlotLeave}
-                onClick={(e) => onPlotClick && onPlotClick(plot, e)}
-              />
-              {isHighlighted && layout && (
-                <text
-                  x={layout.cx}
-                  y={layout.cy}
-                  textAnchor="middle"
-                  dominantBaseline="central"
-                  fill={labelFill}
-                  fontWeight={700}
-                  fontSize={layout.fontSize}
-                  fontFamily="var(--font-twk-issey), system-ui, sans-serif"
-                  clipPath={clipRef}
-                  style={{
-                    pointerEvents: 'none',
-                    userSelect: 'none',
-                  }}
-                >
-                  {label}
-                </text>
-              )}
-            </g>
+            <polygon
+              key={plot.id}
+              points={plot.points}
+              style={{
+                fill,
+                stroke,
+                strokeWidth,
+                opacity,
+                cursor: 'pointer',
+                transition: 'all 0.15s ease-in-out',
+              }}
+              onMouseEnter={() => onPlotHover(plot)}
+              onMouseLeave={onPlotLeave}
+              onClick={(e) => onPlotClick && onPlotClick(plot, e)}
+            />
+          );
+        })}
+      </g>
+
+      {/* Layer 2: villa-id labels, always painted above all polygons */}
+      <g style={{ pointerEvents: 'none' }}>
+        {clipTargets.map((plot) => {
+          const label = String(plot.id);
+          const layout = getLabelLayout(plot.points, label);
+          if (!layout) return null;
+          const labelFill =
+            plot.sheetData?.availability === 'Blocked' ? '#000000' : '#ffffff';
+          return (
+            <text
+              key={`label-${plot.id}`}
+              x={layout.cx}
+              y={layout.cy}
+              textAnchor="middle"
+              dominantBaseline="central"
+              fill={labelFill}
+              fontWeight={700}
+              fontSize={layout.fontSize}
+              fontFamily="var(--font-twk-issey), system-ui, sans-serif"
+              clipPath={`url(#plot-clip-${safeClipId(plot.id)})`}
+              style={{ userSelect: 'none' }}
+            >
+              {label}
+            </text>
           );
         })}
       </g>
