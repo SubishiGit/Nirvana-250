@@ -16,6 +16,12 @@ function envFlagTrue(value) {
   return ["1", "true", "yes", "on"].includes(String(value).trim().toLowerCase());
 }
 
+// Live sheet polling is on by default. Set NEXT_PUBLIC_SHEET_POLLING=false to disable.
+function envFlagFalse(value) {
+  if (value == null || value === "") return false;
+  return ["0", "false", "no", "off"].includes(String(value).trim().toLowerCase());
+}
+
 function sheetPollIntervalMs() {
   const raw = parseInt(process.env.NEXT_PUBLIC_SHEET_POLL_MS || "4000", 10);
   if (!Number.isFinite(raw)) return 4000;
@@ -71,7 +77,7 @@ export default function MasterPlan({ mapData, sheetRows = [], sheetCaps }) {
     width: 220, padding: 10, fontSize: 12, buttonSize: 10
   });
 
-  const sheetPollingEnabled = envFlagTrue(process.env.NEXT_PUBLIC_SHEET_POLLING);
+  const sheetPollingEnabled = !envFlagFalse(process.env.NEXT_PUBLIC_SHEET_POLLING);
   const sheetPollMs = sheetPollIntervalMs();
   const [liveSheetRows, setLiveSheetRows] = useState(sheetRows);
   const [liveCaps, setLiveCaps] = useState(() => normalizeCaps(sheetCaps));
