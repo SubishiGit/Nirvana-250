@@ -76,6 +76,11 @@ export function VirtualizedPlots({
     return highlighted;
   }, [activePlotId, plots, hasActiveFilters, matchedPlotIds]);
 
+  const clipTargets = useMemo(
+    () => plots.filter((p) => highlightedIds.has(p.id)),
+    [plots, highlightedIds]
+  );
+
   return (
     <svg
       viewBox={viewBox}
@@ -90,7 +95,7 @@ export function VirtualizedPlots({
       onMouseLeave={onPlotLeave}
     >
       <defs>
-        {plots.map((plot) => (
+        {clipTargets.map((plot) => (
           <clipPath key={`clip-${plot.id}`} id={`plot-clip-${safeClipId(plot.id)}`}>
             <polygon points={plot.points} />
           </clipPath>
@@ -122,8 +127,10 @@ export function VirtualizedPlots({
           }
 
           const label = String(plot.id);
-          const layout = getLabelLayout(plot.points, label);
+          const layout = isHighlighted ? getLabelLayout(plot.points, label) : null;
           const clipRef = `url(#plot-clip-${safeClipId(plot.id)})`;
+          const labelFill =
+            plot.sheetData?.availability === "Blocked" ? "#000000" : "#ffffff";
           
           return (
             <g key={plot.id}>
@@ -141,21 +148,17 @@ export function VirtualizedPlots({
                 onMouseLeave={onPlotLeave}
                 onClick={(e) => onPlotClick && onPlotClick(plot, e)}
               />
-              {layout && (
+              {isHighlighted && layout && (
                 <text
                   x={layout.cx}
                   y={layout.cy}
                   textAnchor="middle"
                   dominantBaseline="central"
-                  fill="#ffffff"
+                  fill={labelFill}
                   fontWeight={700}
                   fontSize={layout.fontSize}
                   fontFamily="var(--font-twk-issey), system-ui, sans-serif"
                   clipPath={clipRef}
-                  paintOrder="stroke"
-                  stroke="rgba(0,0,0,0.55)"
-                  strokeWidth={layout.fontSize * 0.08}
-                  strokeLinejoin="round"
                   style={{
                     pointerEvents: 'none',
                     userSelect: 'none',
