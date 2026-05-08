@@ -35,10 +35,12 @@ function getLabelLayout(pointsStr, label) {
   const h = Math.max(maxY - minY, 1);
   const short = Math.min(w, h);
   const len = Math.max(String(label).length, 1);
-  // Large text, scaled down by width and digit count; clipPath keeps it inside polygon
+  // Large text, scaled down by width and digit count; clipPath keeps it inside polygon.
+  // Multiplier reduces final size ~22% so labels read more naturally on the tilted map.
+  const SIZE_SCALE = 0.78;
   const byShort = short * 0.52;
   const byWidth = (w * 0.92) / (len * 0.58);
-  const fontSize = Math.max(8, Math.min(byShort, byWidth, short * 0.75));
+  const fontSize = Math.max(6, Math.min(byShort, byWidth, short * 0.75)) * SIZE_SCALE;
   return { cx, cy, fontSize };
 }
 
@@ -160,6 +162,7 @@ export function VirtualizedPlots({
                   fontSize={layout.fontSize}
                   fontFamily="var(--font-twk-issey), system-ui, sans-serif"
                   clipPath={clipRef}
+                  transform={`rotate(45 ${layout.cx} ${layout.cy})`}
                   style={{
                     pointerEvents: 'none',
                     userSelect: 'none',
