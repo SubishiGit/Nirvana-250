@@ -248,7 +248,10 @@ export function TopHintBar({ containerWidth = 1024, caps }) {
                           fontFamily: "var(--font-twk-issey), sans-serif",
                           fontSize: numFs,
                           fontWeight: 700,
-                          color: "#ffffff",
+                          color:
+                            row.value <= 0
+                              ? "rgb(255, 0, 0)"
+                              : "rgb(34, 211, 238)",
                           letterSpacing: "0.02em",
                           lineHeight: 1,
                           textAlign: "center",
