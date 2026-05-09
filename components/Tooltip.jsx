@@ -349,9 +349,9 @@ export function Tooltip({
                 let url = '';
                 
                 if (facing === 'east') {
-                  url = 'https://drive.google.com/file/d/1_KW13hh_w-eAy9F7-Swp7iATsYW1PaUE/view?usp=drive_link';
+                  url = 'https://drive.google.com/file/d/16OT8XL6x5N7MsdBIBboMVjZQ1Dz5haQf/view?usp=sharing';
                 } else if (facing === 'west') {
-                  url = 'https://drive.google.com/file/d/1540wREVN3ldn-SWyH-PpdHf8VuXDjklv/view?usp=drive_link';
+                  url = 'https://drive.google.com/file/d/18tlJJzQLpRaWU_vldXFUfLzGQlk-vUtI/view?usp=sharing';
                 }
                 
                 if (url) {
