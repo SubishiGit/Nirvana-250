@@ -28,10 +28,11 @@ const textTransition = {
   ease: EASE_SMOOTH,
 };
 
-const WIDTH_EXPANDED = "min(96vw, 1120px)";
-const WIDTH_MINIMIZED = "min(92vw, 720px)";
-const HEIGHT_EXPANDED = "clamp(158px, 28vh, 300px)";
-const HEIGHT_MINIMIZED = "clamp(52px, 11vw, 76px)";
+// Vertical layout: width is the short axis, height is the long axis.
+const WIDTH_EXPANDED = "clamp(200px, 24vw, 300px)";
+const WIDTH_MINIMIZED = "clamp(44px, 6vw, 60px)";
+const HEIGHT_EXPANDED = "clamp(360px, 72vh, 580px)";
+const HEIGHT_MINIMIZED = "clamp(260px, 56vh, 440px)";
 
 const SECTION_HEADERS = [
   "Standard East",
@@ -54,17 +55,17 @@ function normalizeCaps8(c) {
   });
 }
 
-/** Spine-less downward arrow (triangle only), centered under the panel */
-function BottomArrow() {
+/** Spine-less leftward arrow (triangle only), centered on the panel's left edge */
+function LeftArrow() {
   return (
     <div
       aria-hidden
       style={{
-        width: 14,
-        height: 8,
-        marginTop: -1,
+        width: 8,
+        height: 14,
+        marginRight: -1,
         background: "rgba(15, 15, 20, 0.75)",
-        clipPath: "polygon(50% 100%, 0 0, 100% 0)",
+        clipPath: "polygon(0 50%, 100% 0, 100% 100%)",
         boxShadow: "0 0 0 1px rgba(255,255,255,0.06)",
       }}
     />
@@ -84,36 +85,37 @@ export function TopHintBar({ containerWidth = 1024, caps }) {
   }, []);
 
   const headerFs =
-    containerWidth >= 900 ? 17 : containerWidth >= 450 ? 16 : 15;
+    containerWidth >= 900 ? 14 : containerWidth >= 450 ? 13 : 11;
   const numFs =
-    containerWidth >= 900 ? 56 : containerWidth >= 450 ? 48 : 40;
+    containerWidth >= 900 ? 32 : containerWidth >= 450 ? 26 : 22;
   const minimizedFs =
     containerWidth >= 900 ? 14 : containerWidth >= 450 ? 13 : 12;
 
-  const divider = "1px solid rgba(255, 255, 255, 0.22)";
+  const divider = "1px solid rgba(255, 255, 255, 0.18)";
 
   return (
     <div
       style={{
         position: "fixed",
-        top: 10,
-        left: "50%",
-        transform: "translateX(-50%)",
+        right: 10,
+        top: "50%",
+        transform: "translateY(-50%)",
         pointerEvents: "none",
         display: "flex",
-        flexDirection: "column",
+        flexDirection: "row",
         alignItems: "center",
       }}
     >
+      <LeftArrow />
       <motion.div
         initial={false}
         animate={{
           width: minimized ? WIDTH_MINIMIZED : WIDTH_EXPANDED,
           height: minimized ? HEIGHT_MINIMIZED : HEIGHT_EXPANDED,
-          paddingTop: minimized ? 8 : 8,
-          paddingBottom: minimized ? 8 : 12,
-          paddingLeft: minimized ? 16 : 14,
-          paddingRight: minimized ? 16 : 14,
+          paddingTop: minimized ? 14 : 12,
+          paddingBottom: minimized ? 14 : 12,
+          paddingLeft: minimized ? 8 : 14,
+          paddingRight: minimized ? 8 : 14,
         }}
         transition={{
           ...sizeTransition,
@@ -129,7 +131,7 @@ export function TopHintBar({ containerWidth = 1024, caps }) {
           display: "flex",
           flexDirection: "column",
           boxSizing: "border-box",
-          transformOrigin: "center top",
+          transformOrigin: "right center",
         }}
         onClick={toggle}
         role="button"
@@ -154,7 +156,7 @@ export function TopHintBar({ containerWidth = 1024, caps }) {
             position: "relative",
             display: "flex",
             flexDirection: "column",
-            alignItems: minimized ? "center" : "stretch",
+            alignItems: "stretch",
             justifyContent: minimized ? "center" : "flex-start",
             overflowX: "hidden",
             overflowY: minimized ? "hidden" : "auto",
@@ -162,40 +164,47 @@ export function TopHintBar({ containerWidth = 1024, caps }) {
         >
           <AnimatePresence mode="wait" initial={false}>
             {minimized ? (
-              <motion.span
+              <motion.div
                 key="min-label"
-                initial={{ opacity: 0, y: 5, filter: "blur(6px)" }}
-                animate={{
-                  opacity: 1,
-                  y: 0,
-                  filter: "blur(0px)",
-                  fontSize: minimizedFs,
-                }}
-                exit={{ opacity: 0, y: -4, filter: "blur(4px)" }}
+                initial={{ opacity: 0, x: 4, filter: "blur(6px)" }}
+                animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+                exit={{ opacity: 0, x: -4, filter: "blur(4px)" }}
                 transition={textTransition}
                 style={{
-                  display: "block",
+                  flex: 1,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
                   width: "100%",
-                  color: "#ffffff",
-                  fontFamily: "var(--font-twk-issey), sans-serif",
-                  fontWeight: 700,
-                  letterSpacing: "0.02em",
-                  lineHeight: 1.35,
-                  textAlign: "center",
                 }}
               >
-                Click to view current Villa CAPS
-              </motion.span>
+                <span
+                  style={{
+                    color: "#ffffff",
+                    fontFamily: "var(--font-twk-issey), sans-serif",
+                    fontWeight: 700,
+                    letterSpacing: "0.06em",
+                    lineHeight: 1.35,
+                    textAlign: "center",
+                    fontSize: minimizedFs,
+                    writingMode: "vertical-rl",
+                    textOrientation: "mixed",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  Click to view current Villa CAPS
+                </span>
+              </motion.div>
             ) : (
               <motion.div
-                key="caps-grid"
-                initial={{ opacity: 0, y: 8, filter: "blur(6px)" }}
-                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                exit={{ opacity: 0, y: -6, filter: "blur(4px)" }}
+                key="caps-list"
+                initial={{ opacity: 0, x: 8, filter: "blur(6px)" }}
+                animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+                exit={{ opacity: 0, x: -6, filter: "blur(4px)" }}
                 transition={textTransition}
                 style={{
                   display: "flex",
-                  flexDirection: "row",
+                  flexDirection: "column",
                   alignItems: "stretch",
                   width: "100%",
                   flex: 1,
@@ -207,59 +216,51 @@ export function TopHintBar({ containerWidth = 1024, caps }) {
                     key={row.header}
                     style={{
                       flex: "1 1 0",
-                      minWidth: 0,
                       minHeight: 0,
                       display: "flex",
-                      flexDirection: "column",
+                      flexDirection: "row",
                       alignItems: "center",
-                      justifyContent: "flex-start",
-                      paddingTop: 6,
-                      paddingLeft: 10,
-                      paddingRight: 10,
-                      borderLeft: i === 0 ? "none" : divider,
+                      justifyContent: "space-between",
+                      gap: 10,
+                      paddingTop: 4,
+                      paddingBottom: 4,
+                      paddingLeft: 6,
+                      paddingRight: 6,
+                      borderTop: i === 0 ? "none" : divider,
                     }}
                   >
                     <div
                       style={{
-                        flexShrink: 0,
+                        flex: 1,
+                        minWidth: 0,
                         fontFamily: "var(--font-twk-issey), sans-serif",
                         fontSize: headerFs,
                         fontWeight: 700,
                         color: "rgba(255, 255, 255, 0.95)",
-                        letterSpacing: "0.03em",
+                        letterSpacing: "0.02em",
                         lineHeight: 1.15,
-                        textAlign: "center",
+                        textAlign: "left",
                       }}
                     >
                       {row.header}
                     </div>
                     <div
                       style={{
-                        flex: 1,
-                        minHeight: 0,
-                        width: "100%",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
+                        flexShrink: 0,
+                        fontFamily: "var(--font-twk-issey), sans-serif",
+                        fontSize: numFs,
+                        fontWeight: 700,
+                        color:
+                          row.value <= 0
+                            ? "rgb(255, 0, 0)"
+                            : "rgb(34, 211, 238)",
+                        letterSpacing: "0.02em",
+                        lineHeight: 1,
+                        textAlign: "right",
+                        fontVariantNumeric: "tabular-nums",
                       }}
                     >
-                      <div
-                        style={{
-                          fontFamily: "var(--font-twk-issey), sans-serif",
-                          fontSize: numFs,
-                          fontWeight: 700,
-                          color:
-                            row.value <= 0
-                              ? "rgb(255, 0, 0)"
-                              : "rgb(34, 211, 238)",
-                          letterSpacing: "0.02em",
-                          lineHeight: 1,
-                          textAlign: "center",
-                          fontVariantNumeric: "tabular-nums",
-                        }}
-                      >
-                        {row.value.toLocaleString()}
-                      </div>
+                      {row.value.toLocaleString()}
                     </div>
                   </div>
                 ))}
@@ -268,7 +269,6 @@ export function TopHintBar({ containerWidth = 1024, caps }) {
           </AnimatePresence>
         </div>
       </motion.div>
-      <BottomArrow />
     </div>
   );
 }

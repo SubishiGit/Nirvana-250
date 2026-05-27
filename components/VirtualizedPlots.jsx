@@ -162,7 +162,6 @@ export function VirtualizedPlots({
                   fontSize={layout.fontSize}
                   fontFamily="var(--font-twk-issey), system-ui, sans-serif"
                   clipPath={clipRef}
-                  transform={`rotate(-45 ${layout.cx} ${layout.cy})`}
                   style={{
                     pointerEvents: 'none',
                     userSelect: 'none',
