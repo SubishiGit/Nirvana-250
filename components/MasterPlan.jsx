@@ -276,12 +276,12 @@ export default function MasterPlan({ mapData, sheetRows = [], sheetCaps }) {
       } else {
         const key = extractVillaKey(plot.id);
         sheetData = key ? villaDataMap.get(key) : null;
-        
+
         if (sheetData) {
           switch (sheetData.availability) {
-            case "Sold": color = "rgb(255, 0, 0)"; break;         // opaque red
-            case "Blocked": color = "rgb(255, 255, 0)"; break;    // opaque yellow
-            default: color = "rgb(34, 211, 238)";                 // lighter opaque cyan (Available)
+            case "Sold": color = "rgb(255, 0, 0)"; break;         // red
+            case "Blocked": color = "rgb(255, 255, 0)"; break;    // yellow
+            default: color = "rgb(34, 211, 238)";                 // cyan (Available)
           }
         }
       }

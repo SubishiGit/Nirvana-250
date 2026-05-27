@@ -37,10 +37,10 @@ function getLabelLayout(pointsStr, label) {
   const len = Math.max(String(label).length, 1);
   // Large text, scaled down by width and digit count; clipPath keeps it inside polygon.
   // Multiplier shrinks the final size so labels read naturally on the tilted map.
-  const SIZE_SCALE = 0.68;
-  const byShort = short * 0.52;
-  const byWidth = (w * 0.92) / (len * 0.58);
-  const fontSize = Math.max(6, Math.min(byShort, byWidth, short * 0.75)) * SIZE_SCALE;
+  const SIZE_SCALE = 0.92;
+  const byShort = short * 0.62;
+  const byWidth = (w * 1.05) / (len * 0.58);
+  const fontSize = Math.max(6, Math.min(byShort, byWidth, short * 0.9)) * SIZE_SCALE;
   return { cx, cy, fontSize };
 }
 
@@ -108,20 +108,20 @@ export function VirtualizedPlots({
         {plots.map((plot) => {
           const isHighlighted = highlightedIds.has(plot.id);
           const isHovered = activePlotId === plot.id;
-          
-          // Determine fill and opacity based on filter state
+
+          // Plots are transparent by default. Color only appears when the
+          // plot is hovered, or when it matches an active filter.
           let fill = 'transparent';
           let opacity = 1;
           let stroke = 'rgba(255, 255, 255, 0.2)';
           let strokeWidth = 1;
-          
+
           if (isHighlighted) {
             fill = plot.color;
             stroke = 'white';
             strokeWidth = 0.6;
           }
-          
-          // If hovered, always show full opacity and color
+
           if (isHovered) {
             fill = plot.color;
             opacity = 1;
@@ -162,7 +162,7 @@ export function VirtualizedPlots({
                   fontSize={layout.fontSize}
                   fontFamily="var(--font-twk-issey), system-ui, sans-serif"
                   clipPath={clipRef}
-                  transform={`rotate(45 ${layout.cx} ${layout.cy})`}
+                  transform={`rotate(-45 ${layout.cx} ${layout.cy})`}
                   style={{
                     pointerEvents: 'none',
                     userSelect: 'none',
