@@ -29,9 +29,9 @@ const textTransition = {
 };
 
 // Vertical layout: width is the short axis, height is the long axis.
-const WIDTH_EXPANDED = "clamp(200px, 24vw, 300px)";
+const WIDTH_EXPANDED = "clamp(260px, 30vw, 380px)";
 const WIDTH_MINIMIZED = "clamp(44px, 6vw, 60px)";
-const HEIGHT_EXPANDED = "clamp(360px, 72vh, 580px)";
+const HEIGHT_EXPANDED = "clamp(420px, 80vh, 660px)";
 const HEIGHT_MINIMIZED = "clamp(260px, 56vh, 440px)";
 
 const SECTION_HEADERS = [
@@ -85,9 +85,9 @@ export function TopHintBar({ containerWidth = 1024, caps }) {
   }, []);
 
   const headerFs =
-    containerWidth >= 900 ? 14 : containerWidth >= 450 ? 13 : 11;
+    containerWidth >= 900 ? 20 : containerWidth >= 450 ? 17 : 14;
   const numFs =
-    containerWidth >= 900 ? 32 : containerWidth >= 450 ? 26 : 22;
+    containerWidth >= 900 ? 52 : containerWidth >= 450 ? 42 : 32;
   const minimizedFs =
     containerWidth >= 900 ? 14 : containerWidth >= 450 ? 13 : 12;
 
