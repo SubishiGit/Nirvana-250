@@ -301,8 +301,8 @@ export function Tooltip({
                   const t = tRaw.toLowerCase();
                   if (!t) return {};
 
-                  // Standard => white
-                  if (t === "standard" || t === "normal") {
+                  // Standard (e.g. "Standard East", "Standard West") => white
+                  if (/^standard\b/.test(t) || t === "normal") {
                     return { color: "#ffffff" };
                   }
 
@@ -311,8 +311,8 @@ export function Tooltip({
                     return { color: "rgb(234, 179, 8)", textShadow: "0 0 8px rgba(234, 179, 8, 0.55)" };
                   }
 
-                  // Park view => lilac
-                  if (/park\s*view/.test(t)) {
+                  // Park Facing (e.g. "Park Facing East/West") => lilac
+                  if (/park\s*(facing|view)/.test(t)) {
                     return { color: "rgb(216, 180, 254)", textShadow: "0 0 8px rgba(216, 180, 254, 0.55)" };
                   }
 
@@ -342,47 +342,45 @@ export function Tooltip({
               </div>
             )}
             
-            {/* View Floor Plans Button - only for villas */}
-            <button
-              onClick={() => {
-                const facing = activePlot.sheetData?.facing?.toLowerCase();
-                let url = '';
-                
-                if (facing === 'east') {
-                  url = 'https://drive.google.com/file/d/16OT8XL6x5N7MsdBIBboMVjZQ1Dz5haQf/view?usp=sharing';
-                } else if (facing === 'west') {
-                  url = 'https://drive.google.com/file/d/18tlJJzQLpRaWU_vldXFUfLzGQlk-vUtI/view?usp=sharing';
-                }
-                
-                if (url) {
-                  window.open(url, '_blank');
-                }
-              }}
-              style={{
-                background: '#ffffff',
-                color: '#000000',
-                border: 'none',
-                borderRadius: '8px',
-                padding: `${Math.max(3, Math.round(ui.pad * 0.25))}px ${Math.max(6, Math.round(ui.pad * 0.5))}px`,
-                fontSize: `${ui.text}px`,
-                fontWeight: 'bold',
-                cursor: 'pointer',
-                marginTop: `${Math.max(2, Math.round(ui.pad * 0.2))}px`,
-                width: '100%',
-                fontFamily: 'var(--font-twk-issey), sans-serif',
-                transition: 'all 0.2s ease'
-              }}
-              onMouseEnter={(e) => {
-                e.target.style.background = '#f0f0f0';
-                e.target.style.transform = 'scale(1.02)';
-              }}
-              onMouseLeave={(e) => {
-                e.target.style.background = '#ffffff';
-                e.target.style.transform = 'scale(1)';
-              }}
-            >
-              View Floor Plans
-            </button>
+            {/* View Floor Plans Button - shown only when a URL exists for that facing */}
+            {(() => {
+              const facing = String(activePlot.sheetData?.facing || "").trim().toLowerCase();
+              const FLOOR_PLAN_URLS = {
+                east: 'https://drive.google.com/file/d/1a8UyXkmyWtEdAHsQJUd7X1ZsWKpdkz0V/view?usp=sharing',
+                west: 'https://drive.google.com/file/d/1YPplIgu5-3bN-F0VcpFJOrZt0T9PA0uJ/view?usp=sharing',
+              };
+              const url = FLOOR_PLAN_URLS[facing];
+              if (!url) return null;
+              return (
+                <button
+                  onClick={() => window.open(url, '_blank')}
+                  style={{
+                    background: '#ffffff',
+                    color: '#000000',
+                    border: 'none',
+                    borderRadius: '8px',
+                    padding: `${Math.max(3, Math.round(ui.pad * 0.25))}px ${Math.max(6, Math.round(ui.pad * 0.5))}px`,
+                    fontSize: `${ui.text}px`,
+                    fontWeight: 'bold',
+                    cursor: 'pointer',
+                    marginTop: `${Math.max(2, Math.round(ui.pad * 0.2))}px`,
+                    width: '100%',
+                    fontFamily: 'var(--font-twk-issey), sans-serif',
+                    transition: 'all 0.2s ease'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.target.style.background = '#f0f0f0';
+                    e.target.style.transform = 'scale(1.02)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.target.style.background = '#ffffff';
+                    e.target.style.transform = 'scale(1)';
+                  }}
+                >
+                  View Floor Plans
+                </button>
+              );
+            })()}
           </div>
         ) : (
           <div style={{color: "#999", fontSize: `${ui.text}px`}}>This is a common area.</div>
