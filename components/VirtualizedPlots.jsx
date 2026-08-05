@@ -130,7 +130,9 @@ export function VirtualizedPlots({
           }
 
           const label = String(plot.id);
-          const showLabel = plot.plotType !== 'park';
+          // Only villa numbers appear on the map; common areas (park, clubhouse,
+          // canal) are highlighted but never labelled on the overlay.
+          const showLabel = plot.plotType === 'villa';
           const layout = isHighlighted && showLabel ? getLabelLayout(plot.points, label) : null;
           const clipRef = `url(#plot-clip-${safeClipId(plot.id)})`;
           const labelFill =
