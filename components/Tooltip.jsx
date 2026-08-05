@@ -3,9 +3,28 @@
 import React, { useRef, useLayoutEffect, useState } from "react";
 import { motion } from "framer-motion";
 
+// Park areas (SqYds) keyed by their SVG polygon id.
+const PARK_SIZES = {
+  Park_1: 140,
+  Park_2: 196,
+  Central_park: 7383,
+  Park_3: 5340,
+  Park_4: 98,
+  Park_5: 149,
+  Park_6: 156,
+  Park_7: 64,
+  Park_8: 35,
+  Park_9: 102,
+  Park_10: 191,
+  Park_11: 410,
+  Park_12: 1705,
+  Park_13: 2390,
+};
+
 function titleForPlot(plot) {
   if (plot.plotType === 'clubhouse') return "Clubhouse";
   if (plot.plotType === 'canal') return "Canal / Landscaping Zone";
+  if (plot.plotType === 'park') return "Park";
   const villaKey = plot.id.match(/[0-9]+[A-Z]?/)?.[0] || plot.id;
   return `Villa No. ${villaKey}`;
 }
@@ -381,6 +400,16 @@ export function Tooltip({
                 </button>
               );
             })()}
+          </div>
+        ) : activePlot.plotType === "park" ? (
+          <div style={{ display: "flex", flexDirection: "column", gap: `${Math.max(2, Math.round(ui.pad * 0.15))}px`, fontSize: `${ui.text}px` }}>
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <span style={{ color: "rgb(234, 179, 8)", textShadow: "0 0 8px rgba(234, 179, 8, 0.55)" }}>Park</span>
+              <strong style={{ color: "rgb(234, 179, 8)", textShadow: "0 0 8px rgba(234, 179, 8, 0.55)" }}>
+                {PARK_SIZES[activePlot.id] != null ? `${PARK_SIZES[activePlot.id]} SqYds` : "—"}
+              </strong>
+            </div>
+            <div style={{ color: "#999" }}>This is a common area.</div>
           </div>
         ) : (
           <div style={{color: "#999", fontSize: `${ui.text}px`}}>This is a common area.</div>

@@ -597,7 +597,7 @@ export default function MasterPlan({ mapData, sheetRows = [], sheetCaps }) {
       {/* Tooltip: body portal z-80 so it stacks above filter UI (z-60) */}
       <UILayerPortal zIndex={80}>
         <AnimatePresence>
-          {activePlot && activePlot.plotType !== 'park' && (
+          {activePlot && (
             <Tooltip
               key={activePlot.id}
               activePlot={activePlot}
