@@ -270,6 +270,9 @@ export default function MasterPlan({ mapData, sheetRows = [], sheetCaps }) {
       if (/CLUBHOUSE/i.test(plot.id)) {
         plotType = 'clubhouse';
         color = "rgba(168, 85, 247, 0.7)";
+      } else if (/PARK/i.test(plot.id)) {
+        plotType = 'park';
+        color = "rgba(34, 139, 34, 0.55)"; // forest green highlight on hover
       } else if (/CANAL|LANDSCAPE/i.test(plot.id)) {
         plotType = 'canal';
         color = "rgba(59, 130, 246, 0.7)";
@@ -594,7 +597,7 @@ export default function MasterPlan({ mapData, sheetRows = [], sheetCaps }) {
       {/* Tooltip: body portal z-80 so it stacks above filter UI (z-60) */}
       <UILayerPortal zIndex={80}>
         <AnimatePresence>
-          {activePlot && (
+          {activePlot && activePlot.plotType !== 'park' && (
             <Tooltip
               key={activePlot.id}
               activePlot={activePlot}

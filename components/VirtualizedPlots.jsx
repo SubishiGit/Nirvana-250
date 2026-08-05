@@ -37,7 +37,7 @@ function getLabelLayout(pointsStr, label) {
   const len = Math.max(String(label).length, 1);
   // Large text, scaled down by width and digit count; clipPath keeps it inside polygon.
   // Multiplier shrinks the final size so labels read naturally on the tilted map.
-  const SIZE_SCALE = 0.92;
+  const SIZE_SCALE = 0.8;
   const byShort = short * 0.62;
   const byWidth = (w * 1.05) / (len * 0.58);
   const fontSize = Math.max(6, Math.min(byShort, byWidth, short * 0.9)) * SIZE_SCALE;
@@ -130,7 +130,8 @@ export function VirtualizedPlots({
           }
 
           const label = String(plot.id);
-          const layout = isHighlighted ? getLabelLayout(plot.points, label) : null;
+          const showLabel = plot.plotType !== 'park';
+          const layout = isHighlighted && showLabel ? getLabelLayout(plot.points, label) : null;
           const clipRef = `url(#plot-clip-${safeClipId(plot.id)})`;
           const labelFill =
             plot.sheetData?.availability === "Blocked" ? "#000000" : "#ffffff";
@@ -151,7 +152,7 @@ export function VirtualizedPlots({
                 onMouseLeave={onPlotLeave}
                 onClick={(e) => onPlotClick && onPlotClick(plot, e)}
               />
-              {isHighlighted && layout && (
+              {isHighlighted && showLabel && layout && (
                 <text
                   x={layout.cx}
                   y={layout.cy}

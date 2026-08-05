@@ -63,7 +63,13 @@ function normalizePlotId(id) {
   const s = String(id || "").trim();
   // Common export pattern: ids like "_90" or "_90_" should become "90"
   // so they can match sheet column values exactly.
-  return s.replace(/^_+/, "").replace(/_+$/, "");
+  // Illustrator also appends a "-N" suffix to keep duplicate ids unique
+  // (e.g. two shapes named 338 become "_338" and "_338-2"); strip that so
+  // both map back to the intended plot number.
+  return s
+    .replace(/^_+/, "")
+    .replace(/_+$/, "")
+    .replace(/-\d+$/, "");
 }
 
 function main() {
