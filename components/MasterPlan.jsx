@@ -267,9 +267,9 @@ export default function MasterPlan({ mapData, sheetRows = [], sheetCaps }) {
     return mapData.plots.map(plot => {
       let plotType = 'villa', color = 'transparent', sheetData = null;
       
-      if (/CLUBHOUSE/i.test(plot.id)) {
+      if (/CLUB/i.test(plot.id)) {
         plotType = 'clubhouse';
-        color = "rgba(168, 85, 247, 0.7)";
+        color = "rgba(216, 180, 254, 0.7)"; // lilac highlight on hover
       } else if (/PARK/i.test(plot.id)) {
         plotType = 'park';
         color = "rgba(34, 139, 34, 0.55)"; // forest green highlight on hover
