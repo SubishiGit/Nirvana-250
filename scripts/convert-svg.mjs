@@ -19,28 +19,40 @@ function rectToPoints(x, y, w, h) {
 }
 
 function pathToPoints(d) {
-    const tokens = (d || "").replace(/,/g, " ").trim().match(/[MmLlHhVvZz]|-?\d*\.?\d+/g);
+    const tokens = (d || "").replace(/,/g, " ").trim().match(/[MmLlHhVvCcSsQqTtAaZz]|-?\d*\.?\d+(?:[eE][+-]?\d+)?/g);
     if (!tokens) return "";
     let i = 0, cmd = null, x = 0, y = 0, x0 = 0, y0 = 0;
     const out = [];
+    const isCmd = (t) => /^[MmLlHhVvCcSsQqTtAaZz]$/.test(t);
+    const num = () => +tokens[i++];
     const push = (nx, ny) => { x = nx; y = ny; out.push([x, y]); };
-    const rel = (dx, dy) => push(x + dx, y + dy);
+    // Curve/arc commands are approximated by their end anchor point only,
+    // which is sufficient for these near-rectangular plot outlines.
     while (i < tokens.length) {
-        const t = tokens[i++];
-        if (/[MmLlHhVvZz]/.test(t)) {
-            cmd = t;
-            if (t.toUpperCase() === "Z") { push(x0, y0); }
-            continue;
+        if (isCmd(tokens[i])) {
+            cmd = tokens[i++];
+        } else if (cmd === "Z" || cmd === "z" || cmd === null) {
+            break; // nothing valid to continue after a close (or before a move)
         }
         switch (cmd) {
-            case "M": { const nx = +t, ny = +tokens[i++]; push(nx, ny); x0 = x; y0 = y; cmd = "L"; break; }
-            case "m": { const dx = +t, dy = +tokens[i++]; rel(dx, dy); x0 = x; y0 = y; cmd = "l"; break; }
-            case "L": { const nx = +t, ny = +tokens[i++]; push(nx, ny); break; }
-            case "l": { const dx = +t, dy = +tokens[i++]; rel(dx, dy); break; }
-            case "H": { const nx = +t; push(nx, y); break; }
-            case "h": { const dx = +t; push(x + dx, y); break; }
-            case "V": { const ny = +t; push(x, ny); break; }
-            case "v": { const dy = +t; push(x, y + dy); break; }
+            case "M": { const nx = num(), ny = num(); push(nx, ny); x0 = x; y0 = y; cmd = "L"; break; }
+            case "m": { const dx = num(), dy = num(); push(x + dx, y + dy); x0 = x; y0 = y; cmd = "l"; break; }
+            case "L": { const nx = num(), ny = num(); push(nx, ny); break; }
+            case "l": { const dx = num(), dy = num(); push(x + dx, y + dy); break; }
+            case "H": { push(num(), y); break; }
+            case "h": { push(x + num(), y); break; }
+            case "V": { push(x, num()); break; }
+            case "v": { push(x, y + num()); break; }
+            case "C": { num(); num(); num(); num(); const nx = num(), ny = num(); push(nx, ny); break; }
+            case "c": { num(); num(); num(); num(); const dx = num(), dy = num(); push(x + dx, y + dy); break; }
+            case "S": case "Q": { num(); num(); const nx = num(), ny = num(); push(nx, ny); break; }
+            case "s": case "q": { num(); num(); const dx = num(), dy = num(); push(x + dx, y + dy); break; }
+            case "T": { const nx = num(), ny = num(); push(nx, ny); break; }
+            case "t": { const dx = num(), dy = num(); push(x + dx, y + dy); break; }
+            case "A": { num(); num(); num(); num(); num(); const nx = num(), ny = num(); push(nx, ny); break; }
+            case "a": { num(); num(); num(); num(); num(); const dx = num(), dy = num(); push(x + dx, y + dy); break; }
+            case "Z": case "z": { push(x0, y0); break; }
+            default: { i++; break; }
         }
     }
     if (out.length < 3) return "";
