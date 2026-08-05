@@ -169,7 +169,7 @@ export default function MasterPlan({ mapData, sheetRows = [], sheetCaps }) {
   }, []);
   
   // Base layer image loading (single asset; no placeholder)
-  const { currentSrc, isLoading } = useProgressiveImage('/baselayer.jpg');
+  const { currentSrc, isLoading } = useProgressiveImage('/Nirvana250_Baselayer.png');
   
   // Track container size for responsive behavior
   useEffect(() => {

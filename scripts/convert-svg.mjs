@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 
 // --- Configuration ---
-const INPUT_SVG_PATH = path.join(process.cwd(), 'public', 'map.svg');
+const INPUT_SVG_PATH = path.join(process.cwd(), 'public', 'Nirvana250_Baselayer.svg');
 const OUTPUT_JSON_PATH = path.join(process.cwd(), 'public', 'plots.json');
 
 // --- Helper Functions ---
