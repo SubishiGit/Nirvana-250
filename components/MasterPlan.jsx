@@ -700,7 +700,17 @@ export default function MasterPlan({ mapData, sheetRows = [], sheetCaps }) {
             </div>
             
             <button
-              onClick={() => setShowInstructions(false)}
+              onClick={() => {
+                setShowInstructions(false);
+                setFilters(prev => {
+                  const next = {
+                    ...prev,
+                    availability: new Set(['Available', 'Sold', 'Blocked'])
+                  };
+                  computeMatchesFromFilters(next);
+                  return next;
+                });
+              }}
               style={{
                 background: THEME_ACCENT,
                 color: '#000000',
