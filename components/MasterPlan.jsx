@@ -7,7 +7,6 @@ import { VirtualizedPlots } from "./VirtualizedPlots";
 import { extractVillaKey } from "./idUtil";
 import { AnimatePresence, motion } from "framer-motion";
 import { Tooltip } from "./Tooltip";
-import { TopHintBar } from "./TopHintBar";
 import UILayerPortal from "./UILayerPortal";
 import { Range, getTrackBackground } from "react-range";
 
@@ -611,11 +610,6 @@ export default function MasterPlan({ mapData, sheetRows = [], sheetCaps }) {
             />
           )}
         </AnimatePresence>
-      </UILayerPortal>
-
-      {/* Top hint bar: z-70 above filter (60), below plot tooltip (80) */}
-      <UILayerPortal zIndex={70}>
-        <TopHintBar containerWidth={containerSize.width} caps={liveCaps} />
       </UILayerPortal>
 
       {/* Instructions: portal z-100 so it stays above tooltip + filter portals */}
